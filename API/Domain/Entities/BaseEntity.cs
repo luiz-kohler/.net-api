@@ -1,0 +1,19 @@
+﻿namespace Domain.Entities
+{
+    public abstract class BaseEntity
+    {
+        public Guid Id { get; set; }
+        public DateTime CreatedAt { get; init; }
+        public DateTime? UpdatedAt { get; set; }
+        public bool IsActive { get; set; }
+
+        protected BaseEntity()
+        {
+            Id = Guid.NewGuid();
+            CreatedAt = DateTime.UtcNow;
+            IsActive = true;
+        }
+
+        public virtual void Disable() => IsActive = false;
+    }
+}
