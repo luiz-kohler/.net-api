@@ -20,19 +20,17 @@ namespace Infra
 
         public static void RegisterRepositories(IServiceCollection services)
         {
-            //var derivedClasses = FindConcreteDerivedClasses(typeof(BaseRepository<>));
+            var derivedClasses = FindConcreteDerivedClasses(typeof(BaseRepository<>));
 
-            //foreach (var derivedClass in derivedClasses)
-            //{
-            //    var interfaceType = derivedClass.GetInterfaces().LastOrDefault();
+            foreach (var derivedClass in derivedClasses)
+            {
+                var interfaceType = derivedClass.GetInterfaces().LastOrDefault();
 
-            //    if (interfaceType != null)
-            //    {
-            //        services.AddScoped(interfaceType, derivedClass);
-            //    }
-            //}
-
-            services.AddScoped<IChoreRepository, ChoreRepository>();
+                if (interfaceType != null)
+                {
+                    services.AddScoped(interfaceType, derivedClass);
+                }
+            }
         }
 
         public static List<Type> FindConcreteDerivedClasses(Type baseType)

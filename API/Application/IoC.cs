@@ -29,14 +29,23 @@ namespace Application
 
         private static void AddAutoMapper(this IServiceCollection services)
         {
-            //var mapperConfig = new MapperConfiguration(mc =>
-            //{
-            //    mc.AddProfile(new UserMap());
-            //    mc.AddProfile(new ContactMap());
-            //});
+            var mappingType = typeof(Profile);
 
-            //IMapper mapper = mapperConfig.CreateMapper();
-            //services.AddSingleton(mapper);
+            var mappingsType = Assembly.GetExecutingAssembly()
+                .GetExportedTypes()
+                .Where(t => t.GetInterfaces().Any(i =>
+                    i.IsGenericType &&
+                    i.GetGenericTypeDefinition() == mappingType))
+                .ToList();
+
+            var mapperConfig = new MapperConfiguration(mc =>
+            {
+                foreach (var type in mappingsType)
+                    mc.AddProfile(Activator.CreateInstance(type) as Profile);
+            });
+
+            IMapper mapper = mapperConfig.CreateMapper();
+            services.AddSingleton(mapper);
         }
 
         private static void AddFluentValidation(this IServiceCollection services, Assembly assembly)
