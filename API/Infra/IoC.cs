@@ -1,4 +1,5 @@
-﻿using Infra.Database.Common;
+﻿using Domain.IRepositories;
+using Infra.Database.Common;
 using Infra.Database.Contexts;
 using Infra.Database.Repositories;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,23 +15,24 @@ namespace Infra
             RegisterRepositories(services);
             AddSqlServer(services);
 
-
             return services;
         }
 
         public static void RegisterRepositories(IServiceCollection services)
         {
-            var derivedClasses = FindConcreteDerivedClasses(typeof(BaseRepository<>));
+            //var derivedClasses = FindConcreteDerivedClasses(typeof(BaseRepository<>));
 
-            foreach (var derivedClass in derivedClasses)
-            {
-                var interfaceType = derivedClass.GetInterfaces().FirstOrDefault();
+            //foreach (var derivedClass in derivedClasses)
+            //{
+            //    var interfaceType = derivedClass.GetInterfaces().LastOrDefault();
 
-                if (interfaceType != null)
-                {
-                    services.AddScoped(interfaceType, derivedClass);
-                }
-            }
+            //    if (interfaceType != null)
+            //    {
+            //        services.AddScoped(interfaceType, derivedClass);
+            //    }
+            //}
+
+            services.AddScoped<IChoreRepository, ChoreRepository>();
         }
 
         public static List<Type> FindConcreteDerivedClasses(Type baseType)

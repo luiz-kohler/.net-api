@@ -1,4 +1,5 @@
-﻿using Infra.Database.Contexts;
+﻿using Application.Common.UnitOfWork;
+using Infra.Database.Contexts;
 
 namespace Infra.Database.Common
 {
