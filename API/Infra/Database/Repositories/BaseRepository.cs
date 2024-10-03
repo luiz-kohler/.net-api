@@ -58,6 +58,7 @@ namespace Infra.Database.Repositories
 
         public Task Update(TEntity entity)
         {
+            entity.UpdateBaseEntity();
             DbSet.Update(entity);
             return Task.CompletedTask;
         }

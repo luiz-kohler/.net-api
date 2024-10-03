@@ -10,12 +10,7 @@ namespace Application.Common.AutoMapper
     {
         public ChoreMapping()
         {
-            CreateMap<CreateChoreRequest, Chore>()
-                .ConstructUsing(dest => new Chore())
-                .ReverseMap();
-
-            CreateMap<Chore, GetOneChoreResponse>()
-              .ReverseMap();
+            CreateMap<Chore, GetOneChoreResponse>();
 
             CreateMap<IList<Chore>, GetManyChoresResponse>()
                .ForMember(dest => dest.Chores, opt => opt.MapFrom(src => src));

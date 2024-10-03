@@ -2,10 +2,10 @@
 {
     public abstract class BaseEntity
     {
-        public Guid Id { get; set; }
-        public DateTime CreatedAt { get; init; }
-        public DateTime? UpdatedAt { get; set; }
-        public bool IsActive { get; set; }
+        public Guid Id { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        public DateTime? UpdatedAt { get; private set; }
+        public bool IsActive { get; private set; }
 
         public BaseEntity()
         {
@@ -14,6 +14,12 @@
             IsActive = true;
         }
 
-        public virtual void Disable() => IsActive = false;
+        public virtual void Disable() 
+        {
+            IsActive = false;
+            UpdateBaseEntity();
+        } 
+        
+        public virtual void UpdateBaseEntity() => UpdatedAt = DateTime.UtcNow;
     }
 }

@@ -41,7 +41,6 @@ namespace Application
             {
                 foreach (var type in mappingsType)
                     mc.AddProfile(Activator.CreateInstance(type) as Profile);
-                //mc.AddProfile(new ChoreMapping());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();
