@@ -1,8 +1,9 @@
 ﻿using Domain.Enums;
+using MediatR;
 
-namespace Domain.Entities
+namespace Application.Services.Chore.Create
 {
-    public class Chore : BaseEntity
+    public class CreateChoreRequest : IRequest<CreateChoreResponse>
     {
         public string Title { get; set; }
         public string Description { get; set; }

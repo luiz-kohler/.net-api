@@ -13,8 +13,6 @@ namespace Application.Common.Exceptions
             if (exceptionHandlerFeature == null)
                 return;
 
-            var typex = exceptionHandlerFeature.Error.GetType();
-
             var (httpStatusCode, message) = exceptionHandlerFeature.Error switch
             {
                 NotFoundException exception => (HttpStatusCode.NotFound, exception.Message),

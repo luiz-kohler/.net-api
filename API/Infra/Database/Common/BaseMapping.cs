@@ -21,6 +21,8 @@ namespace Infra.Database.Common
         {
             builder.ToTable(TableName);
 
+            builder.Property(e => e.Id).HasColumnName("ID").IsRequired();
+
             builder.Property(e => e.CreatedAt).HasColumnName("CREATED_AT").HasColumnType("DATETIME").IsRequired();
             builder.Property(e => e.UpdatedAt).HasColumnName("UPDATED_AT").HasColumnType("DATETIME").IsRequired(false);
             builder.Property(e => e.IsActive).HasColumnName("IS_ACTIVE").IsRequired();

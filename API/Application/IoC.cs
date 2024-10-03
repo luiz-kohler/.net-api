@@ -1,4 +1,5 @@
-﻿using Application.Common.UnitOfWork;
+﻿using Application.Common.AutoMapper;
+using Application.Common.UnitOfWork;
 using Application.Common.Validation;
 using AutoMapper;
 using FluentValidation;
@@ -33,15 +34,14 @@ namespace Application
 
             var mappingsType = Assembly.GetExecutingAssembly()
                 .GetExportedTypes()
-                .Where(t => t.GetInterfaces().Any(i =>
-                    i.IsGenericType &&
-                    i.GetGenericTypeDefinition() == mappingType))
+                .Where(t => mappingType.IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
                 .ToList();
 
             var mapperConfig = new MapperConfiguration(mc =>
             {
                 foreach (var type in mappingsType)
                     mc.AddProfile(Activator.CreateInstance(type) as Profile);
+                //mc.AddProfile(new ChoreMapping());
             });
 
             IMapper mapper = mapperConfig.CreateMapper();

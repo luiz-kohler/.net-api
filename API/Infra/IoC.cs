@@ -1,4 +1,4 @@
-﻿using Domain.IRepositories;
+﻿using Application.Common.UnitOfWork;
 using Infra.Database.Common;
 using Infra.Database.Contexts;
 using Infra.Database.Repositories;
@@ -27,9 +27,7 @@ namespace Infra
                 var interfaceType = derivedClass.GetInterfaces().LastOrDefault();
 
                 if (interfaceType != null)
-                {
                     services.AddScoped(interfaceType, derivedClass);
-                }
             }
         }
 

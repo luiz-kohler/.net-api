@@ -7,7 +7,7 @@
         public DateTime? UpdatedAt { get; set; }
         public bool IsActive { get; set; }
 
-        protected BaseEntity()
+        public BaseEntity()
         {
             Id = Guid.NewGuid();
             CreatedAt = DateTime.UtcNow;

@@ -17,7 +17,7 @@
       "applicationUrl": "http://localhost:5018",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SQLConnection": "Data Source=host.docker.internal,1433; Initial Catalog = master; Persist Security Info = True; User ID = sa; Password =Admin@123;TrustServerCertificate=True;MultiSubnetFailover=True"
+        "SQLConnection": "Server=localhost;Database=db;User Id=sa;Password=Admin@123;Trusted_Connection=False;TrustServerCertificate=True; MultipleActiveResultSets=true"
       }
     },
     "https": {
@@ -28,17 +28,9 @@
       "applicationUrl": "https://localhost:7019;http://localhost:5018",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "SQLConnection": "Data Source=host.docker.internal,1433; Initial Catalog = master; Persist Security Info = True; User ID = sa; Password =Admin@123;TrustServerCertificate=True;MultiSubnetFailover=True"
+        "SQLConnection": "Server=localhost;Database=db;User Id=sa;Password=Admin@123;Trusted_Connection=False;TrustServerCertificate=True; MultipleActiveResultSets=true"
       }
-    },
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "SQLConnection": "Data Source=host.docker.internal,1433; Initial Catalog = master; Persist Security Info = True; User ID = sa; Password =Admin@123;TrustServerCertificate=True;MultiSubnetFailover=True"
-      }
+    }
     }
   }
 }
