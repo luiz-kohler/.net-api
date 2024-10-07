@@ -4,8 +4,8 @@ namespace Tests.Unit.Helpers
 {
     public class BaseTestFixture
     {
-        public Faker Faker { get; }
-        public DateTime CurrentDate { get; }
+        public Faker Faker { get; private set; }
+        public DateTime CurrentDate { get; private set; }
 
         public BaseTestFixture()
         {

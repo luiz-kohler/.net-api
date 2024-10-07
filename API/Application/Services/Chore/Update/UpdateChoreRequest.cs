@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Services.Chore.Update
 {
-    public class UpdateChoreRequest : IRequest<UpdateChoreResponse>
+    public record UpdateChoreRequest : IRequest<UpdateChoreResponse>
     {
         public Guid Id { get; set; }
         public string Title { get; set; }
