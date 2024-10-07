@@ -16,28 +16,31 @@ namespace Tests.Unit.Tests.Services.Chores
         public CreateChoreTests(ChoreServiceTestFixture fixture)
         {
             _fixture = fixture;
+            _fixture.ResetChoreRepository();
             _handler = new CreateChoreHandler(_fixture.ChoreRepository, _fixture.Mapper);
         }
 
         [Fact]
         public async Task Should_Return_Success_When_Create_Chore()
         {
-            var createChoreRequest = CreateValidCreateChoreRequest();
+            var request = CreateValidCreateChoreRequest();
 
-            var response = await _handler.Handle(createChoreRequest, _fixture.CancellationToken);
+            var response = await _handler.Handle(request, _fixture.CancellationToken);
 
             await _fixture.ChoreRepository.Received().Insert(Arg.Any<Chore>());
             response.Id.Should().NotBeEmpty();
         }
 
         [Theory]
-        [MemberData(nameof(CreateInvalidRequestsWithMessageError))]
-        public async Task Should_Return_Failure_When_Validate_Request_Invalid(CreateChoreRequest request, List<string> expectedMessages)
+        [MemberData(nameof(CreateInvalidRequestsWithMessagesError))]
+        public async Task Should_Return_Failure_When_Validate_Create_Chore_Request_Invalid(CreateChoreRequest request, List<string> expectedMessages)
         {
             var validation = new CreateChoreValidator().Validate(request);
 
             validation.IsValid.Should().BeFalse();   
-            validation.Errors.Count.Should().Be(expectedMessages.Count);   
+            validation.Errors.Count.Should().Be(expectedMessages.Count);
+            validation.Errors.Select(error => error.ErrorMessage).Should().BeEquivalentTo(expectedMessages);
+
         }
 
         private static CreateChoreRequest CreateValidCreateChoreRequest()
@@ -49,12 +52,13 @@ namespace Tests.Unit.Tests.Services.Chores
                 .Generate();
         }
 
-        public static IEnumerable<object[]> CreateInvalidRequestsWithMessageError()
+        public static IEnumerable<object[]> CreateInvalidRequestsWithMessagesError()
         {
             var faker = new Faker();
 
             var errors = new List<string>();
 
+            errors = new List<string>();
             var requestWithTitleNull = CreateValidCreateChoreRequest();
             requestWithTitleNull.Title = null;
             errors.Add("The title must be informed");
@@ -63,20 +67,20 @@ namespace Tests.Unit.Tests.Services.Chores
             errors = new List<string>();
             var requestWithTitleEmpty = CreateValidCreateChoreRequest();
             requestWithTitleEmpty.Title = string.Empty;
-            errors.Add("The title must be informed");
+            errors.Add("The title must have between 2 and 600 characters");
             yield return new object[] { requestWithTitleEmpty, errors };
 
             errors = new List<string>();
-            var requestWithTitleMoreThan600Characters = CreateValidCreateChoreRequest();
-            requestWithTitleMoreThan600Characters.Title = faker.Random.String(601);
+            var requestWithTitleTooShort = CreateValidCreateChoreRequest();
+            requestWithTitleTooShort.Title = faker.Random.String2(1);
             errors.Add("The title must have between 2 and 600 characters");
-            yield return new object[] { requestWithTitleMoreThan600Characters, errors };
+            yield return new object[] { requestWithTitleTooShort, errors };
 
             errors = new List<string>();
-            var requestWithTitleLessThan2Characters = CreateValidCreateChoreRequest();
-            requestWithTitleLessThan2Characters.Title = faker.Random.String(1);
+            var requestWithTitleTooLong = CreateValidCreateChoreRequest();
+            requestWithTitleTooLong.Title = faker.Random.String2(601);
             errors.Add("The title must have between 2 and 600 characters");
-            yield return new object[] { requestWithTitleLessThan2Characters, errors };
+            yield return new object[] { requestWithTitleTooLong, errors };
 
             errors = new List<string>();
             var requestWithDescriptionNull = CreateValidCreateChoreRequest();
@@ -87,20 +91,26 @@ namespace Tests.Unit.Tests.Services.Chores
             errors = new List<string>();
             var requestWithDescriptionEmpty = CreateValidCreateChoreRequest();
             requestWithDescriptionEmpty.Description = string.Empty;
-            errors.Add("The description must be informed");
+            errors.Add("The description must have between 2 and 2000 characters");
             yield return new object[] { requestWithDescriptionEmpty, errors };
 
             errors = new List<string>();
-            var requestWithDescriptionMoreThan2000Characters = CreateValidCreateChoreRequest();
-            requestWithDescriptionMoreThan2000Characters.Description = faker.Random.String(2001);
+            var requestWithDescriptionTooShort = CreateValidCreateChoreRequest();
+            requestWithDescriptionTooShort.Description = faker.Random.String2(1);
             errors.Add("The description must have between 2 and 2000 characters");
-            yield return new object[] { requestWithDescriptionMoreThan2000Characters, errors };
+            yield return new object[] { requestWithDescriptionTooShort, errors };
 
             errors = new List<string>();
-            var requestWithDescriptionLessThan2Characters = CreateValidCreateChoreRequest();
-            requestWithDescriptionLessThan2Characters.Description = faker.Random.String(1);
+            var requestWithDescriptionTooLong = CreateValidCreateChoreRequest();
+            requestWithDescriptionTooLong.Description = faker.Random.String2(2001);
             errors.Add("The description must have between 2 and 2000 characters");
-            yield return new object[] { requestWithDescriptionLessThan2Characters, errors };
+            yield return new object[] { requestWithDescriptionTooLong, errors };
+
+            errors = new List<string>();
+            var requestWithInvalidStatus = CreateValidCreateChoreRequest();
+            requestWithInvalidStatus.Status = (EChoreStatus)999;
+            errors.Add("The status must be valid");
+            yield return new object[] { requestWithInvalidStatus, errors };
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Application.Services.Chore.Delete
             var chore = await _repository.SelectOne(c => c.Id == request.Id);
 
             if (chore == null)
-                throw new NotFoundException("user not found");
+                throw new NotFoundException("Chore not found");
 
             await _repository.Delete(chore);
 

@@ -20,7 +20,7 @@ namespace Application.Services.Chore.Update
             var chore = await _repository.SelectOne(c => c.Id == request.Id);
 
             if (chore == null)
-                throw new NotFoundException("chore not found");
+                throw new NotFoundException("Chore not found");
 
             chore.Title = request.Title;
             chore.Description = request.Description;
