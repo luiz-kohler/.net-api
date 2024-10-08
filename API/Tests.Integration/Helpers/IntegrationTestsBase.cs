@@ -1,6 +1,7 @@
 ﻿using Bogus;
 using Infra.Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using Tests.Integration.Helpers;
@@ -11,7 +12,8 @@ namespace Tests.Integration
     [assembly: CollectionBehavior(DisableTestParallelization = true)]
     public abstract partial class IntegrationTestsBase : IDisposable
     {
-        private const string ConnectionString = "Server=localhost,5434;Database=db;User Id=sa;Password=DbForTests@123;Trusted_Connection=False;TrustServerCertificate=True; MultipleActiveResultSets=true";
+        protected static IConfigurationRoot Configuration { get; }
+        private static string ConnectionString { get; }
 
         private static IServiceProvider GetServiceProvider(IServiceCollection serviceCollection)
         {
@@ -39,6 +41,13 @@ namespace Tests.Integration
 
         static IntegrationTestsBase()
         {
+            Configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.Test.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            ConnectionString = Configuration["SQLConnection"];
+
             var serviceProvider = GetServiceProvider(GetServices());
             TestDatabaseManager.RebuildDatabase(serviceProvider);
         }
