@@ -11,23 +11,8 @@ namespace Tests.Integration.Helpers
     {
         public static void AddTestDatabase(this IServiceCollection services, string dbConnection)
         {
-            //var environmentVariables = Substitute.For<IEnvironmentVariables>();
-            //environmentVariables.GetEnvironmentVariable(Arg.Any<string>()).Returns((string)null);
-            //var config = new[]
-            //{
-            //    ("DBConnection", dbConnection),
-            //};
-
-            //foreach (var (variable, value) in config)
-            //{
-            //    environmentVariables.GetEnvironmentVariable(variable).Returns(value);
-            //}
-
             services.AddScoped<IScopedDatabaseContext, ScopedDatabaseContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //services.AddSingleton(environmentVariables);
-            //services.AddSingleton<IConnectionStringFactory, ConnectionStringFactory>();
-
             services.AddDbContextPool<Context>(opt => opt.UseSqlServer(dbConnection));
         }
     }

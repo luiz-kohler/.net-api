@@ -13,16 +13,8 @@ namespace Tests.Integration.Helpers
             services.AddApplication();
             services.AddInfra();
             services.AddLogging();
-            //ConfigureCulture();
 
             return services;
         }
-
-        //private static void ConfigureCulture()
-        //{
-        //    var ptBrCulture = new CultureInfo("pt-BR");
-        //    CultureInfo.DefaultThreadCurrentCulture = ptBrCulture;
-        //    CultureInfo.DefaultThreadCurrentUICulture = ptBrCulture;
-        //}
     }
 }
