@@ -12,7 +12,7 @@ A RESTful API for managing chores, built with .NET Core, following layered archi
 
 ## Technologies Used
 
-- **.NET**: Cross-platform framework for building applications.
+- **.NET 8**: Cross-platform framework for building applications.
 - **Entity Framework Core**: Object-relational mapper (ORM) for database interactions.
 - **FluentValidation**: Library for building strongly-typed validation rules.
 - **AutoMapper**: Object-object mapper for mapping between domain models and DTOs.
